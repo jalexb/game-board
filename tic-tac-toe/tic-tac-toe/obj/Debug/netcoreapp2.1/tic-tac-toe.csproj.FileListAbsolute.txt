@@ -1,0 +1,12 @@
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\bin\Debug\netcoreapp2.1\tic-tac-toe.deps.json
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\bin\Debug\netcoreapp2.1\tic-tac-toe.runtimeconfig.json
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\bin\Debug\netcoreapp2.1\tic-tac-toe.runtimeconfig.dev.json
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\bin\Debug\netcoreapp2.1\tic-tac-toe.dll
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\bin\Debug\netcoreapp2.1\tic-tac-toe.pdb
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.csprojAssemblyReference.cache
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.AssemblyInfoInputs.cache
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.AssemblyInfo.cs
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.csproj.CoreCompileInputs.cache
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.dll
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.pdb
+C:\Users\Student\workspace\projects\tic-tac-toe\tic-tac-toe\tic-tac-toe\obj\Debug\netcoreapp2.1\tic-tac-toe.genruntimeconfig.cache

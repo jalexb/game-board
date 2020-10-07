@@ -53,7 +53,7 @@ namespace tic_tac_toe
 
         public override void Move()
         {
-            Console.Clear();
+            //Console.Clear();
             int move = -1;
             while (move < 0 || move > 6) //can be sent to base.Move(int maxMove)
             {
@@ -88,24 +88,77 @@ namespace tic_tac_toe
             //if someone has connected4
             //connects 4 does either diagonal, vertical, or horizontal
             //diagonals would be: increasing 4,10,16,22   || decreasing 0,8,16,24
-            //-7 +1
+            //vertical: -7    horizontal: +1
             if (state == "moved") //checks if somebody won or the board is full
             {
-                //check increasing diagonal
+                // '\' diagonal check(base: 0 min: +8 mid: +16 max: +24)   maxI = 41-24=17
+                for(int i = 0; i <= 17; i++)
+                {
+                    if(gameBoard[i] == currPlayer && 
+                        gameBoard[i + 8] == currPlayer && 
+                        gameBoard[i + 16] == currPlayer && 
+                        gameBoard[i + 24] == currPlayer)
+                    {
+                        GameOver(true);
+                    }
+                    if (i == 3 || i == 10 || i == 17)
+                    {
+                        i += 3;
+                    }
+                }
 
-                if ((gameBoard[0] == currPlayer && gameBoard[4] == currPlayer && gameBoard[8] == currPlayer) ||
-                    (gameBoard[0] == currPlayer && gameBoard[1] == currPlayer && gameBoard[2] == currPlayer) ||
-                    (gameBoard[0] == currPlayer && gameBoard[3] == currPlayer && gameBoard[6] == currPlayer) ||
-                    (gameBoard[1] == currPlayer && gameBoard[4] == currPlayer && gameBoard[7] == currPlayer) ||
-                    (gameBoard[2] == currPlayer && gameBoard[4] == currPlayer && gameBoard[6] == currPlayer) ||
-                    (gameBoard[2] == currPlayer && gameBoard[5] == currPlayer && gameBoard[8] == currPlayer) ||
-                    (gameBoard[3] == currPlayer && gameBoard[4] == currPlayer && gameBoard[5] == currPlayer) ||
-                    (gameBoard[6] == currPlayer && gameBoard[7] == currPlayer && gameBoard[8] == currPlayer) ||
-                    (movesMade == 41))
-                    GameOver(true);
-                else
-                    Update();
-            } //Checks if a player has won or the game board is full.
+                // '/' diagonal check(base: 4 min:+6 mid:+12 max: +18) maxI = 41-18=23
+                for (int i = 4; i < 21; i++)
+                {
+                    if (gameBoard[i] == currPlayer &&
+                        gameBoard[i + 6] == currPlayer &&
+                        gameBoard[i + 12] == currPlayer &&
+                        gameBoard[i + 18] == currPlayer)
+                    {
+                        GameOver(true);
+                    }
+                    if (i == 0 || i == 7 || i == 14)
+                    {
+                        i += 3;
+                    }
+                }
+
+                // '|' check (base:0 min:+7 mid:+14 max:+21 ) maxI = 41-21=20
+                for(int i = 0; i < 20; i++)
+                {
+                    if(gameBoard[i] == currPlayer && 
+                       gameBoard[i + 7] == currPlayer && 
+                       gameBoard[i + 14] == currPlayer && 
+                       gameBoard[i + 21] == currPlayer)
+                    {
+                        GameOver(true);
+                    }
+                }
+
+                // '----' check (base:0 min:+1 mid:+2 max:+3 ) maxI = 41-3=38
+                for (int i = 0; i < 38; i++)
+                {
+                    if (gameBoard[i] == currPlayer &&
+                       gameBoard[i + 1] == currPlayer &&
+                       gameBoard[i + 2] == currPlayer &&
+                       gameBoard[i + 3] == currPlayer)
+                    {
+                        GameOver(true);
+                    }
+
+                    if (i == 3 || i == 10 || i == 17 || i == 31)
+                    {
+                        i += 4;
+                    }
+                }
+
+                if(movesMade == 41)
+                {
+                    GameOver(false);
+                }
+
+                Update();
+            }
 
             if (state == "updated")
             {
@@ -122,12 +175,24 @@ namespace tic_tac_toe
         {
             Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[0], gameBoard[1], gameBoard[2], gameBoard[3], gameBoard[4], gameBoard[5], gameBoard[6]);
             Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[7], gameBoard[8], gameBoard[9], gameBoard[10], gameBoard[11], gameBoard[12], gameBoard[13]);
-            Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[14], gameBoard[15], gameBoard[16], gameBoard[17], gameBoard[18], gameBoard[19], gameBoard[20]);
-            Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[21], gameBoard[22], gameBoard[23], gameBoard[24], gameBoard[25], gameBoard[26], gameBoard[27]);
+            Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[14], gameBoard[15], gameBoard[16], gameBoard[17], gameBoard[18], gameBoard[19], gameBoard[20]); 
+            Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[21], gameBoard[22], gameBoard[23], gameBoard[24], gameBoard[25], gameBoard[26], gameBoard[27]); 
             Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[28], gameBoard[29], gameBoard[30], gameBoard[31], gameBoard[32], gameBoard[33], gameBoard[34]);
             Console.WriteLine(" |{0}|{1}|{2}|{3}|{4}|{5}|{6}|", gameBoard[35], gameBoard[36], gameBoard[37], gameBoard[38], gameBoard[39], gameBoard[40], gameBoard[41]);
-            Console.WriteLine(" |=|=|=|=|=|=|=|");
+            Console.WriteLine(" |―|―|―|―|―|―|―|");
             Console.WriteLine(" |0|1|2|3|4|5|6|");
         }
     }
+
+    /*
+        |O| | | | | |X|
+        |O| | | | | |X|
+        |O| | | | |X|X|
+        |X|X| | | |O|O|
+        |X|X| | | |O|O|
+        |X|X| | | |O|O|
+        |-|-|-|-|-|-|-|
+        |0|1|2|3|4|5|6|
+        Congratulations Player X, you won!
+     */
 }

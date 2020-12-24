@@ -1,91 +1,178 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using tic_tac_toe;
 
-namespace BoredGames
+namespace tic_tac_toe
 {
     /// <summary>
     /// builds and updates the game board
     /// </summary>
     public class BoardGames
     {
+        public string Title { get; set; }
 
-        //The game board class should have methods in properties that connect 4 and tic tac toe inherit
-        //Those classes include:
-        //printing a game board
-        //checking the state of the game
-        //having a winner, or a draw
-        //instantiating the game board, and the movesDictionary
+        public string[] GameBoard;
+
+        public string[] emptyPositions;
+
+        public string[] minimaxGameBoard;
+
+        public int[] UserOptions { get; set; }
+
+        public Player Player { get; set; }
         
-        //There should be classes that are seperate from tic tac to and connect 4
-        //things that be seperate should include:
-        //each player of the game
-        //updating the game board
-        //initializing the game board
+        public int MovesMade { get; set; } = 0;
+        public int minimaxMovesMade { get; set; } = 0;
 
-        //Game Board Player:
-        //counts the moves
-        //
+        public int maxMoves = 0;
+        public bool playerIsAI { get; set; } = false;
+        public int accumulativeScores { get; set; } = 0;
+        public int MaxMoves { get; set; }
 
-        //IsXPlayer
-        //YPlayer
-        //Dictionary from 1-9
-        // 1 2 3
-        // 4 5 6
-        // 7 8 9
-
-        //Methods:
-        //update()   updates and prints the game board
-        //move() waits for player to make a move
-        //initialize() initializes the board, resets the dictionary
-        //GameOver() when the game board is full, or someone won
-        //GameState() ensures the game completes the game cycle.
-        //MinMax value system for the computer to calculate the nextmove
-
-        public Dictionary<int, string> gameBoard = new Dictionary<int, string>();
-        public bool PlayerIsX { get; set; }
-        public bool WinnerIsX { get; set; }
-        public string currPlayer { get; set; }
-        public int movesMade { get; set; } = 0;
 
         public virtual void Initialize()
         {}
 
         public void Update()
         {
+            Player.CurrPlayer = Player.CurrPlayer == "X" ? "O" : "X";
             PrintBoard();
-            GameCycle("updated");
         }
 
-        public virtual void Move()
-        {}
+        public void Move(int playerMove)
+        {
+            if (Player.MoveOptions.Contains(playerMove))
+            {
+                MovesMade++;
+                UpdateGameBoard(playerMove);
+            }
+            else
+            {
+                Console.WriteLine("There's already a piece there.");
+                Move(Player.Move());
+            }
+        }
 
-        public virtual void GameCycle(string state)
-        {}
+        public void UpdateGameBoard(int selectedMove)
+        {
+            int gameboardIndexOfSelectedMove = UserOptions[selectedMove];
+            GameBoard[gameboardIndexOfSelectedMove] = Player.CurrPlayer;
+            Player.UpdateValidPositions(GameBoard, selectedMove);
+        }
 
-        public void GameOver(bool thereIsAWinner)
+        public void SetPlayerPiece(string userChoice)
+        {
+            Player = new Player(userChoice, UserOptions);
+        }
+
+        public virtual bool GameOver(string[] gameBoard, string currPlayer) 
+        {
+            return false;
+        }
+        public bool EndOfGame()
         {
 
             PrintBoard();
 
-            if (thereIsAWinner) {
+            /*if (thereIsAWinner) {
                 Console.WriteLine("Congratulations Player {0}, you won!", currPlayer);
             } else {
                 Console.WriteLine("Game over. Nobody has won.");
+            }*/
+
+            string playAgain = null;
+            while (playAgain == null)
+            {
+                Console.WriteLine("Would you like to play again? (Y)es or (N)o?");
+                playAgain = Console.ReadLine();
+
+                if (playAgain.ToUpper() == "Y")
+                {
+                    return true;
+                }
+                else if (playAgain.ToUpper() == "N")
+                {
+                    return false;
+                }
+                else 
+                { 
+                    playAgain = null; 
+                }
             }
 
-            Console.WriteLine("Would you like to play again? (Y)es or (N)o?");
-            string playAgain = Console.ReadLine();
-
-            if (playAgain.ToLower() == "y") {
-                Initialize();
-            } else {
-                Console.WriteLine("Thanks for playing!!");
-                System.Environment.Exit(1);
-            }
+            return false;
 
             
         }
+
+
+        /*
+        public int Minimax()
+        {
+            EmptyPositionFinder();
+            
+            string currentPlayerPiece = (playerIsAI) ? (PlayerIsX) ? "O" : "X" : (PlayerIsX) ? "X" : "O";
+            string aiPiece = PlayerIsX ? "O" : "X";
+            string playerPiece = (PlayerIsX) ? "X" : "O";
+
+            
+            string[] newGameBoard = minimaxGameBoard;
+
+            if (minimaxMovesMade < movesMade)
+                minimaxMovesMade = movesMade;
+
+
+
+            if (GameOver(newGameBoard, currentPlayerPiece))
+            {
+                if (currentPlayerPiece == aiPiece)
+                {
+                    accumulativeScores += 10;
+                    return accumulativeScores;
+                }
+                if (currentPlayerPiece == playerPiece)
+                {
+                    accumulativeScores -= 10;
+                    return accumulativeScores;
+                }
+            }
+            else if (minimaxMovesMade == maxMoves)
+            {
+                return accumulativeScores;
+            }
+            else
+            {
+                for (var i = 0; i < emptyPositions.Length; i++)
+                {
+                    if (!playerIsAI) //min
+                    {
+                        int bestValue = -100000;
+                        playerIsAI = true;
+                        newGameBoard[int.Parse(emptyPositions[i]) - 1] = playerPiece;
+                        minimaxGameBoard = newGameBoard;
+                        int v = Minimax(); //5 -- 3 -- 1
+                        bestValue = Math.Max(bestValue, v);
+                        return bestValue;
+
+                    }
+                    else //max
+                    {
+                        int bestValue = 100000;
+                        playerIsAI = false;
+                        newGameBoard[int.Parse(emptyPositions[i]) - 1] = aiPiece;
+                        minimaxGameBoard = newGameBoard;
+                        int v = Minimax(); //6 -- 4 -- 2
+                        bestValue = Math.Min(bestValue, v);
+                        return bestValue;
+                    }
+                }
+            }
+            
+        }*/
 
         public virtual void PrintBoard()
         {}
